@@ -1,0 +1,2 @@
+-- Create views in 'news' postgreSQL db for use with
+-- logs_analysis.py 
