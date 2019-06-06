@@ -1,14 +1,14 @@
 # Udacity Full Stack Developer Log Analysis
 
-##Setup
+## Setup
 
-##Views Required
+## Views Required
 
-##Question 1 
+## Question 1 
 
-##Question 2
+## Question 2
 
-##Question 3
+## Question 3
 
-##Reults
+## Reults
 
