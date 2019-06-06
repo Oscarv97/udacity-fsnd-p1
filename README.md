@@ -10,5 +10,5 @@
 
 ## Question 3
 
-## Reults
+## Results
 
