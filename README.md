@@ -10,6 +10,26 @@ The database contains newspaper articles, as well as the web server log for the 
 The program you write in this project will run from the command line. It won't take any input from the user. Instead, it will connect to that database, use SQL queries to analyze the log data, and print out the answers to some questions.
 
 ---
+
+## Prerequisites
+        
+        Virtual Box 5.8.0
+        Vagrant
+        Text Editor of choice
+        Download VM source code as zip or clone from provided git repo
+
+- In the **Vagrant** folder of provided code run the following
+        
+        $: vagrant up
+
+        $: vagrant ssh
+
+ 
+ NOTE: The vagrant virtual machine may not start in the **vagrant** shared folder if so run 
+
+            cd ../../vagrant
+
+---
 ## Setup
 
 - Make sure you have newsdata.sql, the SQL script file with all the data. It can be downloaded from the Udacity course page.

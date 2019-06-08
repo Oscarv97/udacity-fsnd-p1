@@ -13,7 +13,11 @@ def execute_query(query):
     try:
         db = psycopg2.connect(database=DBNAME)
         c = db.cursor()
-        c.execute(query)
+        try:
+            c.execute(query)
+        except (Exception) as error:
+            print('Failed to execute Query', error)
+
         results = c.fetchall()
         db.close()
         return (results)
@@ -54,6 +58,7 @@ question3 = ("""
 def get_top_articles():
 
     print('\nQ1: What are they most popular three articles of all time?\n')
+    # potential point of failure
     try:
         top_articles = execute_query(question1)
 
