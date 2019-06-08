@@ -58,23 +58,22 @@ def get_top_articles():
         top_articles = execute_query(question1)
 
         for title, views in top_articles:
-            articles = " " + '"' + title + '"' + " — " + str(views) + " views\n"
+            articles = " " + '"' + title + '"' + \
+                " — " + str(views) + " views\n"
             sys.stdout.write(articles)
 
     except (Exception) as error:
-            print('Failed run Query for question 1', error)
-
+        print('Failed run Query for question 1', error)
 
 
 def get_top_authors():
 
     print('\nQ2: Who are the most popular article authors of all time?\n')
     try:
-    popular_authors = execute_query(question2)
+        popular_authors = execute_query(question2)
 
-
-    for name, results in popular_authors:
-        print("  ", name, "-", results, "results")
+        for name, results in popular_authors:
+            print("  ", name, "-", results, "results")
     except (Exception) as error:
         print('Failed run Query for question 2', error)
 
@@ -82,11 +81,11 @@ def get_top_authors():
 def get_error_percentage():
     print("\nQ3: On which days did more than 1% of requests lead to errors?\n")
     try:
-    error_days = execute_query(question3)
+        error_days = execute_query(question3)
 
-    for i in range(len(error_days)):
-        print('\t', error_days[i][0].strftime("%B"), error_days[i][0].strftime(
-            "%d"), ',', error_days[i][0].strftime("%Y"), '——', error_days[i][1], '%')
+        for i in range(len(error_days)):
+            print('\t', error_days[i][0].strftime("%B"), error_days[i][0].strftime(
+                "%d"), ',', error_days[i][0].strftime("%Y"), '——', error_days[i][1], '%')
     except (Exception) as error:
         print('Failed run Query for question 3', error)
 
