@@ -8,6 +8,7 @@ DBNAME = "news"
 
 
 def execute_query(query):
+    # Elements of sql lesson - DRY principles
     try:
         db = psycopg2.connect(database=DBNAME)
         c = db.cursor()
@@ -17,19 +18,41 @@ def execute_query(query):
         return (results)
 
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        print('Failed to connect to DataBase', DBNAME, error)
+
+
+question1 = ("""
+    SELECT title, count(title)
+    FROM log, articles
+    WHERE '/article/' || articles.slug = log.path
+    GROUP BY title
+    ORDER BY count DESC
+    LIMIT 3""")
+
+question2 = ("""
+    SELECT name, count(title)
+    FROM log, articles, authors
+    WHERE '/article/' || articles.slug = log.path
+    AND authors.id = articles.author
+    GROUP BY authors.name
+    ORDER BY count DESC""")
+
+question3 = ("""
+    SELECT * from (SELECT a.day,
+        round(cast((100*b.hits) AS numeric) / cast(a.hits as numeric), 2)
+    AS errorPercent FROM
+        (SELECT date(time) AS day, count(*) AS hits FROM log GROUP BY day) AS a
+    INNER JOIN
+        (SELECT date(time) AS day, count(*) AS hits FROM log WHERE status
+        LIKE '%40%' GROUP BY day) AS b on a.day = b.day)
+    AS t where errorPercent > 1.0;
+"""
+             )
 
 
 def get_top_articles():
-    query = ("""
-        SELECT title, count(title)
-        FROM log, articles
-        WHERE '/article/' || articles.slug = log.path
-        GROUP BY title
-        ORDER BY count DESC
-        LIMIT 3""")
 
-    top_articles = execute_query(query)
+    top_articles = execute_query(question1)
 
     print('\nQ1: What are they most popular three articles of all time?\n')
 
@@ -39,37 +62,17 @@ def get_top_articles():
 
 
 def get_top_authors():
-    query = ("""
-        SELECT name, count(title)
-        FROM log, articles, authors
-        WHERE '/article/' || articles.slug = log.path
-        AND authors.id = articles.author
-        GROUP BY authors.name
-        ORDER BY count DESC""")
 
-    popular_authors = execute_query(query)
+    popular_authors = execute_query(question2)
 
     print('\nQ2: Who are the most popular article authors of all time?\n')
 
-    for name, views in popular_authors:
-        print("  ", name, "-", views, "views")
+    for name, results in popular_authors:
+        print("  ", name, "-", results, "results")
 
 
 def get_error_percentage():
-
-    query3 = ("""
-        SELECT * from (SELECT a.day,
-            round(cast((100*b.hits) AS numeric) / cast(a.hits as numeric), 2)
-        AS errorPercent FROM
-            (SELECT date(time) AS day, count(*) AS hits FROM log GROUP BY day) AS a
-        INNER JOIN
-            (SELECT date(time) AS day, count(*) AS hits FROM log WHERE status
-            LIKE '%404%' GROUP BY day) AS b on a.day = b.day)
-        AS t where errorPercent > 1.0;
-"""
-              )
-    error_days = execute_query(query3)
-
+    error_days = execute_query(question3)
     print("\nQ3: On which days did more than 1% of requests lead to errors?\n")
 
     for i in range(len(error_days)):
