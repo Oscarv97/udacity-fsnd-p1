@@ -31,7 +31,7 @@ def get_top_articles():
 
     top_articles = execute_query(query)
 
-    print('\nWhat are they most popular three articles of all time?\n')
+    print('\nQ1: What are they most popular three articles of all time?\n')
 
     for title, views in top_articles:
         articles = " " + '"' + title + '"' + " — " + str(views) + " views\n"
@@ -49,7 +49,7 @@ def get_top_authors():
 
     popular_authors = execute_query(query)
 
-    print('\nWho are the most popular article authors of all time?\n')
+    print('\nQ2: Who are the most popular article authors of all time?\n')
 
     for name, views in popular_authors:
         print("  ", name, "-", views, "views")
@@ -70,10 +70,11 @@ def get_error_percentage():
               )
     error_days = execute_query(query3)
 
-    print("\nOn which days did more than 1% of requests lead to errors?\n")
+    print("\nQ3: On which days did more than 1% of requests lead to errors?\n")
 
     for i in range(len(error_days)):
-        print('\t',error_days[i][0].strftime("%B"),error_days[i][0].strftime("%d"),',',error_days[i][0].strftime("%Y"),'——', error_days[i][1], '%')
+        print('\t', error_days[i][0].strftime("%B"), error_days[i][0].strftime(
+            "%d"), ',', error_days[i][0].strftime("%Y"), '——', error_days[i][1], '%')
 
 
 if __name__ == '__main__':

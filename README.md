@@ -27,3 +27,8 @@ Who are the most popular article authors of all time?
    Markoff Chaney - 84557 views
 ```
 ## Question 3
+ - On which days did more than 1% of requests lead to errors? 
+ - Results
+ ```
+  July 17 , 2016 —— 2.26 %
+```
