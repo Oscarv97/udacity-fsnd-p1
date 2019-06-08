@@ -9,6 +9,7 @@ DBNAME = "news"
 
 def execute_query(query):
     # Elements of sql lesson - DRY principles
+    #  Also makes this easier to unit test as you can assert execute_query was called
     try:
         db = psycopg2.connect(database=DBNAME)
         c = db.cursor()
@@ -52,32 +53,42 @@ question3 = ("""
 
 def get_top_articles():
 
-    top_articles = execute_query(question1)
-
     print('\nQ1: What are they most popular three articles of all time?\n')
+    try:
+        top_articles = execute_query(question1)
 
-    for title, views in top_articles:
-        articles = " " + '"' + title + '"' + " — " + str(views) + " views\n"
-        sys.stdout.write(articles)
+        for title, views in top_articles:
+            articles = " " + '"' + title + '"' + " — " + str(views) + " views\n"
+            sys.stdout.write(articles)
+
+    except (Exception) as error:
+            print('Failed run Query for question 1', error)
+
 
 
 def get_top_authors():
 
+    print('\nQ2: Who are the most popular article authors of all time?\n')
+    try:
     popular_authors = execute_query(question2)
 
-    print('\nQ2: Who are the most popular article authors of all time?\n')
 
     for name, results in popular_authors:
         print("  ", name, "-", results, "results")
+    except (Exception) as error:
+        print('Failed run Query for question 2', error)
 
 
 def get_error_percentage():
-    error_days = execute_query(question3)
     print("\nQ3: On which days did more than 1% of requests lead to errors?\n")
+    try:
+    error_days = execute_query(question3)
 
     for i in range(len(error_days)):
         print('\t', error_days[i][0].strftime("%B"), error_days[i][0].strftime(
             "%d"), ',', error_days[i][0].strftime("%Y"), '——', error_days[i][1], '%')
+    except (Exception) as error:
+        print('Failed run Query for question 3', error)
 
 
 if __name__ == '__main__':
