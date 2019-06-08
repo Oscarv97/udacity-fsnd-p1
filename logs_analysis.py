@@ -2,6 +2,7 @@
 
 import psycopg2
 import sys
+import datetime
 
 DBNAME = "news"
 
@@ -56,13 +57,23 @@ def get_top_authors():
 
 def get_error_percentage():
 
-    query = ("""
-    
-        """)
-
-    error_days = execute_query(query)
+    query3 = ("""
+        SELECT * from (SELECT a.day,
+            round(cast((100*b.hits) AS numeric) / cast(a.hits as numeric), 2)
+        AS errorPercent FROM
+            (SELECT date(time) AS day, count(*) AS hits FROM log GROUP BY day) AS a
+        INNER JOIN
+            (SELECT date(time) AS day, count(*) AS hits FROM log WHERE status
+            LIKE '%404%' GROUP BY day) AS b on a.day = b.day)
+        AS t where errorPercent > 1.0;
+"""
+              )
+    error_days = execute_query(query3)
 
     print("\nOn which days did more than 1% of requests lead to errors?\n")
+
+    for i in range(len(error_days)):
+        print('\t',error_days[i][0].strftime("%B"),error_days[i][0].strftime("%d"),',',error_days[i][0].strftime("%Y"),'——', error_days[i][1], '%')
 
 
 if __name__ == '__main__':
@@ -70,4 +81,4 @@ if __name__ == '__main__':
 
     get_top_authors()
 
-    # get_error_percentage()
+    get_error_percentage()
