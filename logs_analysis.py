@@ -9,7 +9,8 @@ DBNAME = "news"
 
 def execute_query(query):
     # Elements of sql lesson - DRY principles
-    #  Also makes this easier to unit test as you can assert execute_query was called
+    #  Also makes this easier to unit test as you
+    # can assert execute_query was called
     try:
         db = psycopg2.connect(database=DBNAME)
         c = db.cursor()
@@ -89,8 +90,10 @@ def get_error_percentage():
         error_days = execute_query(question3)
 
         for i in range(len(error_days)):
-            print('\t', error_days[i][0].strftime("%B"), error_days[i][0].strftime(
-                "%d"), ',', error_days[i][0].strftime("%Y"), '——', error_days[i][1], '%')
+            print('\t', error_days[i][0].strftime("%B"),
+                  error_days[i][0].strftime(
+                "%d"), ',', error_days[i][0].strftime("%Y"),
+                '——', error_days[i][1], '%')
     except (Exception) as error:
         print('Failed run Query for question 3', error)
 
